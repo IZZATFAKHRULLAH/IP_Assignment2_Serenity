@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Admin - Edit Member</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+        
+        :root {
+            --primary: #10B981;
+            --primary-dark: #059669;
+            --bg-start: #ECFDF5;
+            --bg-end: #E0F2FE;
+            --text-dark: #1F2937;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, var(--bg-start), var(--bg-end));
+            min-height: 100vh;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .card {
+            background: #fff;
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(16, 185, 129, 0.15);
+            width: 100%;
+            max-width: 500px;
+        }
+
+        h2 {
+            color: var(--text-dark);
+            margin-top: 0;
+            margin-bottom: 25px;
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--text-dark);
+            font-size: 0.9em;
+        }
+
+        input[type="text"], input[type="number"] {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #D1D5DB;
+            border-radius: 8px;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+            transition: all 0.3s;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2);
+        }
+
+        .btn-update {
+            width: 100%;
+            padding: 14px;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s;
+            margin-top: 10px;
+        }
+
+        .btn-update:hover {
+            background-color: var(--primary-dark);
+        }
+
+        .back-link {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            color: #6B7280;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9em;
+        }
+
+        .back-link:hover {
+            color: var(--primary-dark);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="card">
+        <h2>Edit Member Details</h2>
+
+        <div th:if="${person != null}">
+            <form th:action="@{/admin/person/edit}" method="post">
+            
+                <input type="hidden" name="originalId" th:value="${person.id}">
+            
+                <div class="form-group">
+                    <label for="name">Name</label>
+                    <input type="text" id="name" name="name" th:value="${person.name}" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="id">ID (Matric/Staff)</label>
+                    <input type="text" id="id" name="id" th:value="${person.id}" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="yob">Year of Birth</label>
+                    <input type="number" id="yob" name="yob" th:value="${person.yob}" required>
+                </div>
+                
+                <div class="form-group" style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                    <div>
+                        <label for="weight">Weight (kg)</label>
+                        <input type="number" id="weight" name="weight" step="0.1" th:value="${person.weight}" required>
+                    </div>
+                    <div>
+                        <label for="height">Height (m)</label>
+                        <input type="number" id="height" name="height" step="0.01" th:value="${person.height}" required>
+                    </div>
+                </div>
+                
+                <button type="submit" class="btn-update">Update Member</button>
+            </form>
+        </div>
+
+        <a th:href="@{/admin/person/list}" class="back-link">Back to Member List</a>
+    </div>
+
+</body>
+</html>

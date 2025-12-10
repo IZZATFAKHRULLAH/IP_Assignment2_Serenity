@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Member List</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+        
+        :root {
+            --primary: #10B981; --primary-dark: #059669;
+            --bg-start: #ECFDF5; --bg-end: #E0F2FE;
+        }
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, var(--bg-start), var(--bg-end));
+            min-height: 100vh; padding: 40px; margin: 0; box-sizing: border-box;
+        }
+        .container {
+            background: white; padding: 30px; border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(16, 185, 129, 0.1);
+            max-width: 1000px; margin: 0 auto;
+        }
+        h2 { color: var(--primary-dark); margin-top: 0; }
+        
+        /* Search Bar styling */
+        .search-box { display: flex; gap: 10px; margin-bottom: 20px; }
+        input[type=text] {
+            flex-grow: 1; padding: 10px; border: 1px solid #D1D5DB; border-radius: 6px;
+        }
+        .btn {
+            padding: 10px 20px; border: none; border-radius: 6px; cursor: pointer; color: white; font-weight: 600; text-decoration: none; display: inline-block;
+        }
+        .btn-search { background-color: var(--primary); }
+        
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th { background-color: #ECFDF5; color: var(--primary-dark); padding: 12px; text-align: left; font-weight: 600; }
+        td { padding: 12px; border-bottom: 1px solid #f3f4f6; color: #374151; }
+        tr:hover { background-color: #FAFAFA; }
+        
+        .action-links { display: flex; gap: 5px; }
+        .btn-sm { padding: 5px 10px; font-size: 0.85em; }
+        .btn-view { background-color: #3B82F6; }
+        .btn-edit { background-color: #F59E0B; }
+        .btn-delete { background-color: #EF4444; }
+        
+        .back-link { display: inline-block; margin-top: 20px; color: var(--primary-dark); text-decoration: none; font-weight: 600; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Member Management</h2>
+
+        <form th:action="@{/admin/person/list}" method="get" class="search-box">
+            <input type="text" name="searchId" placeholder="Search by ID..." th:value="${param.searchId}">
+            <button type="submit" class="btn btn-search">Search</button>
+        </form>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th> <th>Name</th> <th>YOB</th> <th>Stats</th> <th>BMI</th> <th>Cat</th> <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:if="${persons == null or #lists.isEmpty(persons)}">
+                    <td colspan="7" style="text-align: center; color: #6B7280;">No records found.</td>
+                </tr>
+                <tr th:each="person : ${persons}">
+                    <td th:text="${person.id}">ID</td>
+                    <td th:text="${person.name}">Name</td>
+                    <td th:text="${person.yob}">YOB</td>
+                    <td th:text="${person.height} + 'm / ' + ${person.weight} + 'kg'">Stats</td>
+                    <td th:text="${#numbers.formatDecimal(person.bmi, 1, 2)}">BMI</td>
+                    <td>
+                        <span th:text="${person.category}"
+                              th:style="${person.category == 'Normal' ? 'color:#10B981; font-weight:bold;' : 'color:#EF4444; font-weight:bold;'}">
+                        </span>
+                    </td>
+                    <td class="action-links">
+                        <a th:href="@{/admin/person/view(id=${person.id})}" class="btn btn-sm btn-view">View</a>
+                        <a th:href="@{/admin/person/edit(id=${person.id})}" class="btn btn-sm btn-edit">Edit</a>
+                        <form th:action="@{/admin/person/delete}" method="post" style="display:inline;">
+                            <input type="hidden" name="id" th:value="${person.id}">
+                            <button type="submit" class="btn btn-sm btn-delete">Del</button>
+                        </form>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <a th:href="@{/admin/dashboard}" class="back-link">← Back to Dashboard</a>
+    </div>
+</body>
+</html>

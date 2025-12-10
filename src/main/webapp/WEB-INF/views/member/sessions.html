@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>My Sessions</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+        
+        :root {
+            --primary: #10B981; --primary-dark: #059669;
+            --bg-start: #ECFDF5; --bg-end: #E0F2FE;
+            --text-dark: #1F2937; --text-light: #6B7280;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, var(--bg-start) 0%, var(--bg-end) 100%);
+            min-height: 100vh;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 40px 20px;
+        }
+
+        .container {
+            background: white;
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(16, 185, 129, 0.1);
+            width: 100%;
+            max-width: 1000px;
+        }
+
+        h2 {
+            color: var(--text-dark);
+            margin-top: 0;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: #6B7280;
+            margin-bottom: 30px;
+            font-size: 0.95em;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            border-bottom: 1px solid #E5E7EB;
+            padding-bottom: 10px;
+        }
+
+        .tab {
+            padding: 10px 20px;
+            background: none;
+            border: none;
+            border-radius: 8px;
+            font-family: 'Poppins';
+            font-weight: 600;
+            color: #6B7280;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .tab.active {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .tab:hover:not(.active) {
+            background-color: #F3F4F6;
+        }
+
+        .sessions-list {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .session-card {
+            background: white;
+            border: 1px solid #E5E7EB;
+            border-radius: 12px;
+            padding: 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s;
+        }
+
+        .session-card:hover {
+            border-color: var(--primary);
+            box-shadow: 0 5px 15px rgba(16, 185, 129, 0.1);
+        }
+
+        .session-info h3 {
+            margin: 0 0 10px 0;
+            color: var(--text-dark);
+        }
+
+        .session-details {
+            display: flex;
+            gap: 30px;
+            color: #6B7280;
+            font-size: 0.9em;
+        }
+
+        .detail-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .session-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            font-family: 'Poppins';
+            transition: all 0.3s;
+        }
+
+        .btn-confirm {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .btn-confirm:hover {
+            background-color: var(--primary-dark);
+        }
+
+        .btn-cancel {
+            background-color: #F3F4F6;
+            color: #6B7280;
+        }
+
+        .btn-cancel:hover {
+            background-color: #E5E7EB;
+        }
+
+        .btn-view {
+            background-color: #3B82F6;
+            color: white;
+        }
+
+        .btn-view:hover {
+            background-color: #2563EB;
+        }
+
+        .status-badge {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 600;
+            display: inline-block;
+        }
+
+        .status-upcoming {
+            background-color: #DBEAFE;
+            color: #1E40AF;
+        }
+
+        .status-completed {
+            background-color: #D1FAE5;
+            color: #065F46;
+        }
+
+        .status-cancelled {
+            background-color: #FEE2E2;
+            color: #991B1B;
+        }
+
+        .no-sessions {
+            text-align: center;
+            padding: 50px;
+            color: #9CA3AF;
+            font-style: italic;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 30px;
+            color: var(--primary-dark);
+            text-decoration: none;
+            font-weight: 600;
+            padding: 10px 20px;
+            border: 1px solid var(--primary);
+            border-radius: 8px;
+            transition: all 0.3s;
+        }
+
+        .back-link:hover {
+            background-color: var(--primary);
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>My Scheduled Sessions</h2>
+        <p class="subtitle">View and manage all your upcoming sessions with trainers. Confirm your attendance here.</p>
+
+        <div class="tabs">
+            <button class="tab active" onclick="filterSessions('upcoming')">Upcoming</button>
+            <button class="tab" onclick="filterSessions('completed')">Completed</button>
+            <button class="tab" onclick="filterSessions('cancelled')">Cancelled</button>
+            <button class="tab" onclick="filterSessions('all')">All Sessions</button>
+        </div>
+
+        <div class="sessions-list" id="upcoming-sessions">
+            <!-- Session 1 -->
+            <div class="session-card">
+                <div class="session-info">
+                    <h3>Personal Training - Strength Focus</h3>
+                    <div class="session-details">
+                        <div class="detail-item">
+                            <span>👤</span>
+                            <span>Trainer: Alex Johnson</span>
+                        </div>
+                        <div class="detail-item">
+                            <span>📅</span>
+                            <span>Date: 2025-12-15</span>
+                        </div>
+                        <div class="detail-item">
+                            <span>⏰</span>
+                            <span>Time: 10:00 AM - 11:00 AM</span>
+                        </div>
+                        <div class="detail-item">
+                            <span>📍</span>
+                            <span>Location: Gym Hall A</span>
+                        </div>
+                    </div>
+                    <span class="status-badge status-upcoming">Upcoming</span>
+                </div>
+                <div class="session-actions">
+                    <button class="btn btn-confirm" onclick="confirmAttendance(this)">Confirm Attendance</button>
+                    <button class="btn btn-cancel" onclick="rescheduleSession(this)">Reschedule</button>
+                </div>
+            </div>
+
+            <!-- Session 2 -->
+            <div class="session-card">
+                <div class="session-info">
+                    <h3>Progress Review & Consultation</h3>
+                    <div class="session-details">
+                        <div class="detail-item">
+                            <span>👤</span>
+                            <span>Trainer: Sarah Lee</span>
+                        </div>
+                        <div class="detail-item">
+                            <span>📅</span>
+                            <span>Date: 2025-12-18</span>
+                        </div>
+                        <div class="detail-item">
+                            <span>⏰</span>
+                            <span>Time: 2:00 PM - 2:45 PM</span>
+                        </div>
+                        <div class="detail-item">
+                            <span>📍</span>
+                            <span>Location: Consultation Room 3</span>
+                        </div>
+                    </div>
+                    <span class="status-badge status-upcoming">Upcoming</span>
+                </div>
+               

@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Admin - View Member</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+        
+        :root {
+            --primary: #10B981;
+            --primary-dark: #059669;
+            --bg-start: #ECFDF5;
+            --bg-end: #E0F2FE;
+            --text-dark: #1F2937;
+            --border-color: #F3F4F6;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, var(--bg-start), var(--bg-end));
+            min-height: 100vh;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .details-card {
+            background: #fff;
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(16, 185, 129, 0.15);
+            width: 100%;
+            max-width: 600px;
+        }
+
+        h2 {
+            text-align: center;
+            color: var(--primary-dark);
+            margin-bottom: 30px;
+            font-weight: 700;
+        }
+
+        .details-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .details-list li {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .details-list li:last-child {
+            border-bottom: none;
+        }
+
+        .detail-label {
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        .detail-value {
+            color: #4B5563;
+            text-align: right;
+        }
+
+        /* Badge style for Category */
+        .badge {
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 600;
+            display: inline-block;
+        }
+        .cat-Normal { background-color: #D1FAE5; color: #065F46; }
+        .cat-Underweight { background-color: #DBEAFE; color: #1E40AF; }
+        .cat-Overweight { background-color: #FEF3C7; color: #92400E; }
+        .cat-Obese { background-color: #FEE2E2; color: #991B1B; }
+
+        .button-container {
+            text-align: center;
+            margin-top: 35px;
+        }
+
+        .button {
+            display: inline-block;
+            padding: 12px 30px;
+            background-color: var(--primary);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: background-color 0.3s;
+            box-shadow: 0 4px 6px rgba(16, 185, 129, 0.2);
+        }
+
+        .button:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-1px);
+        }
+
+        .no-data {
+            text-align: center;
+            color: #6B7280;
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="details-card">
+        <h2>Member Details</h2>
+        
+        <div th:if="${person == null}">
+            <p class="no-data">No member data available.</p>
+        </div>
+
+        <ul class="details-list" th:if="${person != null}">
+            <li><span class="detail-label">ID</span> <span class="detail-value" th:text="${person.id}">ID</span></li>
+            <li><span class="detail-label">Name</span> <span class="detail-value" th:text="${person.name}">Name</span></li>
+            <li><span class="detail-label">Year of Birth</span> <span class="detail-value" th:text="${person.yob}">yob</span></li>
+            <li><span class="detail-label">Gender</span> <span class="detail-value" th:text="${person.gender}">Gender</span></li>
+            <li><span class="detail-label">Height</span> <span class="detail-value" th:text="${person.height} + ' m'">Height</span></li>
+            <li><span class="detail-label">Weight</span> <span class="detail-value" th:text="${person.weight} + ' kg'">Weight</span></li>
+            <li><span class="detail-label">BMI</span> 
+                <span class="detail-value" style="font-weight:bold;" th:text="${#numbers.formatDecimal(person.bmi, 1, 2)}">BMI</span>
+            </li>
+            <li>
+                <span class="detail-label">Category</span> 
+                <span th:class="'badge cat-' + ${person.category}" th:text="${person.category}">Category</span>
+            </li>
+            <li>
+                <span class="detail-label">Interests</span>
+                <span class="detail-value">
+                    <span th:if="${person.interests == null or person.interests.length == 0}">None</span>
+                    <span th:if="${person.interests != null}">
+                        <span th:each="interest, iterStat : ${person.interests}" 
+                              th:text="${interest} + (!${iterStat.last} ? ', ' : '')"></span>
+                    </span>
+                </span>
+            </li>
+        </ul>
+
+        <div class="button-container">
+            <a class="button" th:href="@{/admin/person/list}">Back to List</a>
+        </div>
+        
+        <p style="text-align:center; margin-top:20px; font-size:0.8em; color:#9CA3AF;">
+        </p>
+    </div>
+</body>
+</html>

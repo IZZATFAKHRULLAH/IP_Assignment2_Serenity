@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Member Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+        
+        :root {
+            --primary: #10B981; --primary-dark: #059669;
+            --bg-start: #ECFDF5; --bg-end: #E0F2FE;
+            --text-dark: #1F2937;
+        }
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, var(--bg-start), var(--bg-end));
+            min-height: 100vh; margin: 0; padding: 20px;
+            display: flex; justify-content: center; align-items: center;
+        }
+        .container {
+            background: white; padding: 40px; border-radius: 16px; width: 100%; max-width: 600px;
+            box-shadow: 0 10px 25px rgba(16, 185, 129, 0.1);
+        }
+        h2 { color: var(--primary-dark); text-align: center; margin-bottom: 10px; }
+        .welcome-text { text-align: center; color: #6B7280; margin-bottom: 30px; }
+        
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        
+        .card-btn {
+            background: #F3F4F6; padding: 20px; border-radius: 12px;
+            text-decoration: none; color: var(--text-dark); font-weight: 600;
+            text-align: center; transition: all 0.3s; border: 1px solid transparent;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+        }
+        .card-btn:hover {
+            background: white; border-color: var(--primary);
+            color: var(--primary); box-shadow: 0 5px 15px rgba(16, 185, 129, 0.15);
+            transform: translateY(-2px);
+        }
+        .logout {
+            display: block; text-align: center; margin-top: 30px;
+            color: #EF4444; text-decoration: none; font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>HealthHub Dashboard</h2>
+        <p class="welcome-text">Hello, <span th:text="${username}" style="font-weight:bold; color:#10B981;">User</span>!</p>
+        
+        <div class="grid">
+            <a th:href="@{/member/bmi}" class="card-btn">
+                <span>⚖️ Calculate BMI</span>
+            </a>
+            <a th:href="@{/member/bmi/history}" class="card-btn">
+                <span>📜 BMI History</span>
+            </a>
+            <a th:href="@{/member/my-plan}" class="card-btn">
+                <span>💪 My Plan</span>
+            </a>
+            <a th:href="@{/member/programs}" class="card-btn">
+                <span>🔍 Browse Programs</span>
+            </a>
+            <a th:href="@{/member/sessions}" class="card-btn">
+                <span>📅 My Sessions</span>
+            </a>
+            <a th:href="@{/member/profile}" class="card-btn">
+                <span>👤 My Profile</span>
+            </a>
+        </div>
+        
+        <a th:href="@{/auth/logout}" class="logout">Log Out</a>
+    </div>
+</body>
+</html>

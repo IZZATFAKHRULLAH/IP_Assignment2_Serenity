@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Schedule Session</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+        
+        :root {
+            --primary: #10B981;
+            --primary-dark: #059669;
+            --bg-start: #ECFDF5;
+            --bg-end: #E0F2FE;
+            --text-dark: #1F2937;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, var(--bg-start), var(--bg-end));
+            min-height: 100vh;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .card {
+            background: white;
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 20px 40px rgba(16, 185, 129, 0.15);
+            width: 100%;
+            max-width: 500px;
+            text-align: center;
+        }
+
+        h2 {
+            color: var(--text-dark);
+            margin-top: 0;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: #6B7280;
+            margin-bottom: 30px;
+            font-size: 0.9em;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--text-dark);
+            font-size: 0.9em;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #D1D5DB;
+            border-radius: 8px;
+            box-sizing: border-box;
+            font-family: 'Poppins';
+            transition: all 0.3s;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2);
+        }
+
+        button {
+            width: 100%;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 14px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 1em;
+            transition: background 0.3s;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background-color: var(--primary-dark);
+        }
+
+        .back-link {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            color: var(--primary-dark);
+            text-decoration: none;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="card">
+        <h2>Schedule New Member Session</h2>
+        <p class="subtitle">Book a one-on-one session with a member</p>
+
+        <form method="post" th:action="@{/trainer/session/schedule}">
+            <div class="form-group">
+                <label>Member ID</label>
+                <input type="text" name="memberId" required placeholder="Enter member ID">
+            </div>
+            
+            <div class="form-group">
+                <label>Session Type</label>
+                <select name="sessionType">
+                    <option value="Consultation">Initial Consultation</option>
+                    <option value="Training">Personal Training</option>
+                    <option value="Review">Progress Review</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Date & Time</label>
+                <input type="datetime-local" name="sessionTime" required>
+            </div>
+
+            <div class="form-group">
+                <label>Duration (minutes)</label>
+                <input type="number" name="duration" min="15" max="120" value="60">
+            </div>
+
+            <div class="form-group">
+                <label>Notes (Optional)</label>
+                <textarea name="notes" rows="2" placeholder="Any special notes for this session"></textarea>
+            </div>
+
+            <button type="submit">Schedule Session</button>
+        </form>
+
+        <a th:href="@{/trainer/dashboard}" class="back-link">← Back to Dashboard</a>
+    </div>
+
+</body>
+</html>

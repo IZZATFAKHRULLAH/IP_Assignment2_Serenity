@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Delete Successful</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+        
+        :root {
+            --primary: #10B981;
+            --bg-start: #ECFDF5;
+            --bg-end: #E0F2FE;
+            --text-dark: #1F2937;
+            --danger: #EF4444; /* Red for delete context */
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, var(--bg-start), var(--bg-end));
+            min-height: 100vh;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .card {
+            background: white;
+            padding: 50px 40px;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            width: 100%;
+            max-width: 450px;
+            text-align: center;
+            animation: popIn 0.4s ease-out;
+        }
+
+        @keyframes popIn { 
+            0% { transform: scale(0.9); opacity: 0; } 
+            100% { transform: scale(1); opacity: 1; } 
+        }
+
+        .icon-circle {
+            width: 80px;
+            height: 80px;
+            background-color: #FEE2E2; /* Light Red */
+            color: var(--danger);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 40px;
+            margin: 0 auto 25px auto;
+        }
+
+        h2 {
+            color: var(--text-dark);
+            margin: 0 0 10px 0;
+            font-weight: 700;
+        }
+
+        .message {
+            color: #4B5563;
+            font-size: 1.1em;
+            margin-bottom: 30px;
+            line-height: 1.5;
+        }
+
+        .highlight-name {
+            color: var(--text-dark);
+            font-weight: 700;
+            color: var(--danger);
+        }
+
+        .btn {
+            display: block;
+            width: 100%;
+            padding: 14px;
+            background-color: var(--primary);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: background 0.3s;
+            box-sizing: border-box;
+        }
+
+        .btn:hover {
+            background-color: #059669;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="card">
+        <div class="icon-circle">🗑️</div>
+
+        <h2>Member Deleted</h2>
+
+        <p class="message">
+            The member <span class="highlight-name" th:text="${deletedName}">User</span> 
+            has been deleted successfully.
+        </p>
+
+        <a th:href="@{/admin/person/list}" class="btn">Return to Member List</a>
+    </div>
+</body>
+</html>

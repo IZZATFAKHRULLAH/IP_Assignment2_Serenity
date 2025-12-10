@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>BMI Result</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+        
+        :root {
+            --primary: #10B981;
+            --bg-start: #ECFDF5;
+            --bg-end: #E0F2FE;
+            --text-dark: #1F2937;
+            --border-color: #F3F4F6;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, var(--bg-start), var(--bg-end));
+            min-height: 100vh;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .card {
+            background: white;
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(16, 185, 129, 0.1);
+            width: 100%;
+            max-width: 500px;
+            text-align: center;
+        }
+
+        h2 { color: var(--text-dark); margin-top: 0; }
+
+        .score-box {
+            background: #F9FAFB;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px 0;
+            border: 1px solid var(--border-color);
+        }
+
+        .bmi-value {
+            font-size: 3em;
+            font-weight: 700;
+            color: var(--text-dark);
+            line-height: 1;
+        }
+
+        .bmi-label {
+            color: #6B7280;
+            font-size: 0.9em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 5px;
+        }
+
+        .category-badge {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.9em;
+        }
+
+        /* Dynamic colors based on category */
+        .Normal { background-color: #D1FAE5; color: #065F46; } /* Green */
+        .Underweight { background-color: #DBEAFE; color: #1E40AF; } /* Blue */
+        .Overweight { background-color: #FEF3C7; color: #92400E; } /* Yellow */
+        .Obese { background-color: #FEE2E2; color: #991B1B; } /* Red */
+
+        .details-list {
+            list-style: none;
+            padding: 0;
+            text-align: left;
+            margin-top: 30px;
+        }
+
+        .details-list li {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border-color);
+            color: #4B5563;
+        }
+        
+        .details-list li:last-child { border-bottom: none; }
+        .label { font-weight: 600; color: var(--text-dark); }
+
+        .btn {
+            display: inline-block;
+            background-color: var(--primary);
+            color: white;
+            text-decoration: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            margin-top: 25px;
+            transition: background 0.3s;
+        }
+        
+        .btn:hover { background-color: #059669; }
+        .btn-secondary { background-color: #6B7280; margin-left: 10px; }
+        .btn-secondary:hover { background-color: #4B5563; }
+    </style>
+</head>
+<body>
+
+    <div class="card">
+        <h2>BMI Result</h2>
+        
+        <div th:if="${person != null}">
+            <div class="score-box">
+                <div class="bmi-value" th:text="${#numbers.formatDecimal(person.bmi, 1, 2)}">22.5</div>
+                <div class="bmi-label">BMI Score</div>
+                <div th:class="'category-badge ' + ${message}" th:text="${message}">Normal</div>
+            </div>
+
+            <ul class="details-list">
+                <li><span class="label">Name</span> <span th:text="${person.name}">User</span></li>
+                <li><span class="label">ID</span> <span th:text="${person.id}">123</span></li>
+                <li><span class="label">Gender</span> <span th:text="${person.gender}">Male</span></li>
+                <li><span class="label">Height / Weight</span> <span th:text="${person.height} + 'm / ' + ${person.weight} + 'kg'">Stats</span></li>
+                <li>
+                    <span class="label">Interests</span>
+                    <span>
+                    <span th:if="${person.interests == null or person.interests.isEmpty()}">None</span>
+                    <span th:if="${person.interests != null and not person.interests.isEmpty()}" 
+                    th:text="${person.interests}">Sports, Travel, Tech</span>
+                    </span>
+                </li>
+            </ul>
+        </div>
+        
+        <div style="margin-top:20px;">
+            <a th:href="@{/member/bmi}" class="btn">Calculate Again</a>
+            <a th:href="@{/member/dashboard}" class="btn btn-secondary">Dashboard</a>
+        </div>
+    </div>
+
+</body>
+</html>

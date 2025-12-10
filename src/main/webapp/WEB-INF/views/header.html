@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+    <!-- Header Fragment -->
+    <header th:fragment="header">
+        <nav style="background: linear-gradient(135deg, #10B981 0%, #059669 100%); 
+                    padding: 1rem 2rem; color: white; display: flex; 
+                    justify-content: space-between; align-items: center;">
+            <div style="display: flex; align-items: center; gap: 1rem;">
+                <div style="font-size: 1.5rem; font-weight: bold;">🌿 HealthHub@UTM</div>
+                <div style="font-size: 0.9rem; opacity: 0.9;">
+                    <span th:text="${#dates.format(#dates.createNow(), 'dd MMM yyyy')}">10 Dec 2025</span>
+                </div>
+            </div>
+            <div style="display: flex; align-items: center; gap: 1.5rem;">
+                <span th:if="${session.username != null}" 
+                      style="font-weight: 600;">
+                    Welcome, <span th:text="${session.username}">User</span>
+                </span>
+                <span th:if="${session.role != null}" 
+                      style="background: rgba(255,255,255,0.2); padding: 0.3rem 0.8rem; 
+                             border-radius: 20px; font-size: 0.8rem;">
+                    <span th:text="${session.role}">Role</span>
+                </span>
+                <a th:href="@{/auth/logout}" 
+                   style="color: white; text-decoration: none; font-weight: 600;
+                          padding: 0.5rem 1rem; border: 1px solid rgba(255,255,255,0.3);
+                          border-radius: 6px; transition: all 0.3s;"
+                   onmouseover="this.style.backgroundColor='rgba(255,255,255,0.1)'"
+                   onmouseout="this.style.backgroundColor='transparent'">
+                    Logout
+                </a>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Footer Fragment -->
+    <footer th:fragment="footer">
+        <div style="background: #F9FAFB; padding: 2rem; text-align: center; 
+                    margin-top: 3rem; border-top: 1px solid #E5E7EB;">
+            <div style="color: #6B7280; font-size: 0.9rem;">
+                <p>HealthHub@UTM - Fitness Management System</p>
+                <p>© 2025 Universiti Teknologi Malaysia. All rights reserved.</p>
+                <p style="margin-top: 0.5rem; font-size: 0.8rem;">
+                    <a href="#" style="color: #10B981; text-decoration: none; margin: 0 0.5rem;">Privacy Policy</a> | 
+                    <a href="#" style="color: #10B981; text-decoration: none; margin: 0 0.5rem;">Terms of Service</a> | 
+                    <a href="#" style="color: #10B981; text-decoration: none; margin: 0 0.5rem;">Contact Support</a>
+                </p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

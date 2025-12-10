@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Browse Programs</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+        
+        :root {
+            --primary: #10B981; --primary-dark: #059669;
+            --bg-start: #ECFDF5; --bg-end: #E0F2FE;
+            --text-dark: #1F2937; --text-light: #6B7280;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, var(--bg-start) 0%, var(--bg-end) 100%);
+            min-height: 100vh;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 40px 20px;
+        }
+
+        .container {
+            background: white;
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(16, 185, 129, 0.1);
+            width: 100%;
+            max-width: 1200px;
+        }
+
+        h2 {
+            color: var(--text-dark);
+            margin-top: 0;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: #6B7280;
+            margin-bottom: 30px;
+            font-size: 0.95em;
+        }
+
+        .search-bar {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+        }
+
+        .search-input {
+            flex-grow: 1;
+            padding: 12px 20px;
+            border: 1px solid #D1D5DB;
+            border-radius: 8px;
+            font-family: 'Poppins';
+            font-size: 1em;
+        }
+
+        .search-button {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .search-button:hover {
+            background-color: var(--primary-dark);
+        }
+
+        .programs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        .program-card {
+            background: white;
+            border: 1px solid #E5E7EB;
+            border-radius: 12px;
+            overflow: hidden;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .program-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .program-header {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            padding: 20px;
+        }
+
+        .program-title {
+            margin: 0;
+            font-size: 1.3em;
+            font-weight: 700;
+        }
+
+        .program-category {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8em;
+            margin-top: 8px;
+        }
+
+        .program-body {
+            padding: 20px;
+        }
+
+        .program-description {
+            color: #6B7280;
+            font-size: 0.95em;
+            line-height: 1.5;
+            margin-bottom: 20px;
+        }
+
+        .program-details {
+            display: flex;
+            justify-content: space-between;
+            color: #4B5563;
+            font-size: 0.9em;
+            margin-bottom: 20px;
+        }
+
+        .detail-item {
+            text-align: center;
+        }
+
+        .detail-label {
+            display: block;
+            font-weight: 600;
+            color: var(--primary-dark);
+        }
+
+        .enroll-button {
+            width: 100%;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .enroll-button:hover {
+            background-color: var(--primary-dark);
+        }
+
+        .enrolled-badge {
+            width: 100%;
+            background-color: #10B981;
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 8px;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 20px;
+            color: var(--primary-dark);
+            text-decoration: none;
+            font-weight: 600;
+            padding: 10px 20px;
+            border: 1px solid var(--primary);
+            border-radius: 8px;
+            transition: all 0.3s;
+        }
+
+        .back-link:hover {
+            background-color: var(--primary);
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Browse Fitness Programs</h2>
+        <p class="subtitle">Explore all available fitness programs. You can enroll in any program from this page.</p>
+
+        <div class="search-bar">
+            <input type="text" class="search-input" placeholder="Search programs by name or category...">
+            <button class="search-button">Search</button>
+        </div>
+
+       <!-- In the programs-grid section, replace static content with: -->
+    <div class="programs-grid" th:if="${programs != null}">
+        <div class="program-card" th:each="program : ${programs}">
+            <div class="program-header">
+                <h3 class="program-title" th:text="${program.name}">Program Name</h3>
+                <span class="program-category">Fitness</span>
+            </div>
+            <div class="program-body">
+                <p class="program-description" th:text="${program.description}">Program description</p>
+                <div class="program-details">
+                    <div class="detail-item">
+                        <span class="detail-label">Duration</span>
+                        <span th:text="${program.durationWeeks} + ' weeks'">4 weeks</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Level</span>
+                        <span>All Levels</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Fee</span>
+                    <span th:text="'RM ' + ${#numbers.formatDecimal(program.monthlyFee, 1, 2)} + '/month'">RM 120/month</span>
+                </div>
+            </div>
+            <button class="enroll-button" th:onclick="'alert(\'Enrolled in ' + ${program.name} + '!\')'">Enroll Now</button>
+            </div>
+        </div>
+    </div>
+        <a th:href="@{/member/dashboard}" class="back-link">← Back to Dashboard</a>
+    </div>
+</body>
+</html>

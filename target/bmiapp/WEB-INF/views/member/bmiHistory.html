@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>My BMI History</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+        
+        :root {
+            --primary: #10B981;
+            --primary-dark: #059669;
+            --bg-start: #ECFDF5;
+            --bg-end: #E0F2FE;
+            --text-dark: #1F2937;
+            --border-color: #F3F4F6;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, var(--bg-start), var(--bg-end));
+            min-height: 100vh;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start; /* Aligns to top so table can grow */
+            padding: 40px 20px;
+        }
+
+        .container {
+            background: white;
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(16, 185, 129, 0.1);
+            width: 100%;
+            max-width: 1000px;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        h2 {
+            color: var(--text-dark);
+            margin-top: 0;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: #6B7280;
+            margin-bottom: 30px;
+            font-size: 0.95em;
+        }
+
+        /* Table Styling */
+        .table-responsive {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        th {
+            background-color: #ECFDF5;
+            color: var(--primary-dark);
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 0.9em;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        td {
+            padding: 15px;
+            border-bottom: 1px solid var(--border-color);
+            color: #374151;
+            font-size: 0.95em;
+        }
+
+        tr:hover td {
+            background-color: #F9FAFB;
+        }
+
+        /* Category Badges */
+        .badge {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 600;
+            display: inline-block;
+        }
+        
+        .Normal { background-color: #D1FAE5; color: #065F46; }      /* Green */
+        .Underweight { background-color: #DBEAFE; color: #1E40AF; } /* Blue */
+        .Overweight { background-color: #FEF3C7; color: #92400E; }  /* Yellow */
+        .Obese { background-color: #FEE2E2; color: #991B1B; }       /* Red */
+
+        .back-link {
+            display: inline-block;
+            margin-top: 20px;
+            color: #6B7280;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9em;
+            transition: color 0.2s;
+        }
+
+        .back-link:hover {
+            color: var(--primary);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px;
+            color: #9CA3AF;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>My BMI History</h2>
+        <p class="subtitle">A complete record of your health calculations.</p>
+
+        <div class="table-responsive">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Date/ID</th> <th>Name</th>
+                        <th>YOB</th>
+                        <th>Weight</th>
+                        <th>Height</th>
+                        <th>BMI</th>
+                        <th>Category</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:if="${historyList == null or #lists.isEmpty(historyList)}">
+                         <td colspan="7" class="empty-state">No BMI records found. Calculate your first one!</td>
+                    </tr>
+                    
+                    <tr th:each="person : ${historyList}">
+                        <td th:text="${person.id}" style="font-family: monospace; color: #6B7280;">ID</td>
+                        <td th:text="${person.name}" style="font-weight: 600;">Name</td>
+                        <td th:text="${person.yob}">1999</td>
+                        <td th:text="${#numbers.formatDecimal(person.weight, 1, 1)} + ' kg'">70.0 kg</td>
+                        <td th:text="${#numbers.formatDecimal(person.height, 1, 2)} + ' m'">1.75 m</td>
+                        <td th:text="${#numbers.formatDecimal(person.bmi, 1, 2)}" style="font-weight:bold;">22.86</td>
+                        <td>
+                            <span th:class="'badge ' + ${person.category}" th:text="${person.category}">Normal</span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <a th:href="@{/member/dashboard}" class="back-link">← Back to Dashboard</a>
+    </div>
+
+</body>
+</html>
