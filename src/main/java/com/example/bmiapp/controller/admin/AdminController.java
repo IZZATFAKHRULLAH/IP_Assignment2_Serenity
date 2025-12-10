@@ -12,7 +12,7 @@ import com.example.bmiapp.model.Person;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
-import jakarta.servlet.http.HttpSession; 
+import javax.servlet.http.HttpSession; 
 import java.util.List;
 
 @Controller

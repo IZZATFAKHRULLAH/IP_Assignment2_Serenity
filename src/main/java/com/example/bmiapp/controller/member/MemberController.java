@@ -15,7 +15,7 @@ import com.example.bmiapp.model.Person;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import jakarta.servlet.http.HttpSession;
+import javax.servlet.http.HttpSession;
 
 @Controller
 @RequestMapping("/member")
